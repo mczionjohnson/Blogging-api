@@ -27,15 +27,11 @@ export const getAllBlogs = async (page = 1, limit = 20, query) => {
 
       return { data: searchData, meta: { page, limit } };
     } else {
-      // const search_data = await Blog.find({ title: query });
-
-      // let countBlogs = await Blog.find({ state: "published" })
-
       let publishedBlogs = await Blog.find({ state: "published" })
         .skip(skip)
         .limit(limit);
 
-      // const total = await countBlogs.length;
+
 
       return { data: publishedBlogs, meta: { page, limit } };
     }

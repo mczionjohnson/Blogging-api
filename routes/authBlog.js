@@ -13,7 +13,6 @@ authBlogRouter.all("*", auth);
 
 authBlogRouter.get("/", authController.getAuthBlogs);
 
-
 authBlogRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
 
@@ -189,7 +188,5 @@ authBlogRouter.delete("/:blogId", auth, async (req, res) => {
     });
   }
 });
-
-// authBlogRouter.get("/search", authController.getAuthBlogs);
 
 export default authBlogRouter;

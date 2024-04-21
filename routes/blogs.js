@@ -3,16 +3,9 @@ import { Router } from "express";
 import Blog from "../models/blogSchema.js";
 import * as userController from "../controllers/user.controller.js";
 
-
-
 const blogRouter = Router();
 
-blogRouter.get("/", userController.getAllBlogs) 
-//   blogRouter.get("/", userController.getAllBlogs,) async (req, res) => {
-//   let publishedBlogs = await Blog.find({ state: "published" });
-
-//   res.status(200).json({ message: "Blog created", publishedBlogs });
-// });
+blogRouter.get("/", userController.getAllBlogs);
 
 blogRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
@@ -36,7 +29,5 @@ blogRouter.get("/:blogId", async (req, res) => {
     res.status(404).json({ message: "not found" });
   }
 });
-
-
 
 export default blogRouter;

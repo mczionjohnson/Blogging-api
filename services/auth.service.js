@@ -9,16 +9,31 @@ export const getAuthBlogs = async (
   try {
     const skip = (page - 1) * limit;
 
-    const filter = query ? { name: { $regex: query, $options: "i" } } : {};
+    // let authBlogs = await Blog.find({ user: userId }).skip(skip).limit(limit);
 
-    const forTotal = await Blog.find({ user: userId });
-    let authBlogs = await Blog.find({ user: userId }).skip(skip).limit(limit);
+    if (query != {}) {
+      const searchConditionOne = query
+        ? { title: { $regex: query, $options: "i" } }
+        : {};
+      const searchConditionTwo = query
+        ? { tags: { $regex: query, $options: "i" } }
+        : {};
+      const searchConditionThree = query
+        ? { author: { $regex: query, $options: "i" } }
+        : {};
 
-    const total = forTotal.length;
-    // const total = await Blog.countDocuments(filter);
+      const searchData = await Blog.find({
+        $or: [
+          { $and: [searchConditionOne, { user: userId }] },
+          { $and: [searchConditionTwo, { user: userId }] },
+          { $and: [searchConditionThree, { user: userId }] },
+        ],
+      })
+        .skip(skip)
+        .limit(limit);
 
-
-    return { data: authBlogs, meta: { page, limit, total } };
+      return { data: searchData, meta: { page, limit } };
+    }
   } catch (error) {
     console.log(error);
   }
