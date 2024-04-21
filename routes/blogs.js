@@ -1,0 +1,42 @@
+import { Router } from "express";
+
+import Blog from "../models/blogSchema.js";
+import * as userController from "../controllers/user.controller.js";
+
+
+
+const blogRouter = Router();
+
+blogRouter.get("/", userController.getAllBlogs) 
+//   blogRouter.get("/", userController.getAllBlogs,) async (req, res) => {
+//   let publishedBlogs = await Blog.find({ state: "published" });
+
+//   res.status(200).json({ message: "Blog created", publishedBlogs });
+// });
+
+blogRouter.get("/:blogId", async (req, res) => {
+  const { blogId } = req.params;
+
+  try {
+    const singleBlog = await Blog.find({
+      _id: blogId,
+      state: "published",
+    });
+    if (!singleBlog) {
+      return res.json({ message: " not found" });
+    } else {
+      await Blog.findOneAndUpdate(
+        { _id: blogId },
+        { $inc: { readCount: 1 } } /* no more callback */
+      );
+
+      res.status(200).json({ message: "Blog found", singleBlog });
+    }
+  } catch {
+    res.status(404).json({ message: "not found" });
+  }
+});
+
+
+
+export default blogRouter;
