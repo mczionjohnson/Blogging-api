@@ -29,7 +29,7 @@ authBlogRouter.get("/:blogId", async (req, res) => {
   }
 });
 
-authBlogRouter.post("/", auth, async (req, res) => {
+authBlogRouter.post("/", async (req, res) => {
   let token = req.headers.authorization;
   token = token.split(" ")[1];
 
@@ -75,7 +75,7 @@ authBlogRouter.post("/", auth, async (req, res) => {
   }
 });
 
-authBlogRouter.patch("/:blogId", auth, async (req, res) => {
+authBlogRouter.patch("/:blogId", async (req, res) => {
   const { blogId } = req.params;
   const { title, description, tags, blogBody, state } = req.body;
 
@@ -148,7 +148,7 @@ authBlogRouter.patch("/:blogId", auth, async (req, res) => {
   }
 });
 
-authBlogRouter.delete("/:blogId", auth, async (req, res) => {
+authBlogRouter.delete("/:blogId", async (req, res) => {
   const { blogId } = req.params;
 
   let token = req.headers.authorization;

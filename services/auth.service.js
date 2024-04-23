@@ -20,6 +20,9 @@ export const getAuthBlogs = async (
         : {};
       const searchConditionThree = query
         ? { author: { $regex: query, $options: "i" } }
+        : {}; 
+        const searchConditionFour = query
+        ? { state: { $regex: query, $options: "i" } }
         : {};
 
       const searchData = await Blog.find({
@@ -27,11 +30,16 @@ export const getAuthBlogs = async (
           { $and: [searchConditionOne, { user: userId }] },
           { $and: [searchConditionTwo, { user: userId }] },
           { $and: [searchConditionThree, { user: userId }] },
+          { $and: [searchConditionFour, { user: userId }] },
+
         ],
       })
         .skip(skip)
         .limit(limit)
         .sort({ readCount: 1, readingTime: -1, timestamp: 1 });
+        // skip
+        // limit
+        // sort
 
       return { data: searchData, meta: { page, limit } };
     }
