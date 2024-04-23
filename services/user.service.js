@@ -22,16 +22,16 @@ export const getAllBlogs = async (page = 1, limit = 20, query) => {
           { $and: [searchConditionThree, { state: "published" }] },
         ],
       })
+        .sort({ readCount: 1, readingTime: -1, timestamps: 1 })
         .skip(skip)
         .limit(limit);
 
       return { data: searchData, meta: { page, limit } };
     } else {
       let publishedBlogs = await Blog.find({ state: "published" })
+        .sort({ readCount })
         .skip(skip)
         .limit(limit);
-
-
 
       return { data: publishedBlogs, meta: { page, limit } };
     }

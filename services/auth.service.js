@@ -30,7 +30,9 @@ export const getAuthBlogs = async (
         ],
       })
         .skip(skip)
-        .limit(limit);
+        .limit(limit)
+        .sort({ readCount: 1, readingTime: 1, timestamp: 1 });
+      // sort({firstName: -1, lastName:-1 ,email:1,createdAt:1, updatedAt:1 })
 
       return { data: searchData, meta: { page, limit } };
     }
