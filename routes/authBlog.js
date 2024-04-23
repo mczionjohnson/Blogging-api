@@ -56,17 +56,19 @@ authBlogRouter.post("/", async (req, res) => {
         const tags = req.body.tags;
         const author = req.user.email;
         const blogBody = req.body.blogBody;
+        const state = req.body.state;
 
         const blog = new Blog({
           title: title,
           description: description,
           tags: tags,
           author: author,
+          state: state,
           blogBody: blogBody,
           readingTime: readingTime,
           user: user,
         });
-        // console.log(blog);
+
         const savedBlog = await blog.save();
 
         res.json({ message: "Blog created", savedBlog });
