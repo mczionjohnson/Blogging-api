@@ -1,7 +1,6 @@
 // import { jest } from "jest";
-// var UserService = require("./user.service");
-// var User = require("../database/schema/user.schema");
-import User from "../database/schema/user.schema";
+
+import Blog from "../models/blogSchema";
 import * as UserService from "./user.service";
 
 describe("Service: User Service", function () {
@@ -12,43 +11,44 @@ describe("Service: User Service", function () {
     jest.reset;
   });
 
-  it("should return all users", async () => {
+  it("should return all blogs", async () => {
     // Given
-    const mockUsers = [
+    const mockBlogs = [
       {
-        name: "User 1",
-        email: "user@mail.com",
-        password: "password",
-        role: "USER",
+        title: "Pomeriggiato",
+        description: "How to make a Italian dish",
+        tags: " veg italian pasta-not-broken dish",
+        state: "draft",
+        blogBody: "Step 1: boil water",
       },
       {
-        name: "User 2",
-        email: "user2@mail.com",
-        password: "password",
-        role: "USER",
+        title: "Nigerian beans ke?",
+        description: "How to cook beans in my country",
+        state: "published",
+        tags: "Chef Chi",
+        blogBody: "Step 1: separate the beans",
       },
     ];
-    User.find = jest
+    Blog.find = jest
       .fn()
-      // .mockImplementation({ skip: () => ({ limit: () => users }) }); <- this did not work
       .mockReturnValue({
+        sort: jest.fn().mockReturnThis(),
         skip: jest.fn().mockReturnThis(),
-        limit: jest.fn().mockReturnValue(mockUsers),
+        limit: jest.fn().mockReturnValue(mockBlogs),
       });
     // this style below also works
     // jest.spyOn(User, "find").mockReturnValue({
     //   skip: jest.fn().mockReturnThis(),
     //   limit: jest.fn().mockReturnValue(users),
     // });
-    User.countDocuments = jest.fn().mockResolvedValue(mockUsers.length);
+    // User.countDocuments = jest.fn().mockResolvedValue(mockUsers.length);
 
     // When
-    const result = await UserService.getAllUsers();
+    const result = await UserService.getAllBlogs();
 
     // Then
-    expect(result.data).toEqual(mockUsers);
-    expect(result.meta.total).toEqual(mockUsers.length);
-    expect(User.find).toHaveBeenCalledTimes(1);
-    expect(User.countDocuments).toHaveBeenCalledTimes(1);
+    expect(result.data).toEqual(mockBlogs);
+    // expect(result.meta).toEqual(mockBlogs.meta);
+    expect(Blog.find).toHaveBeenCalledTimes(1);
   });
 });

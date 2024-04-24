@@ -39,7 +39,7 @@ app.use("/blogs", blogRouter);
 app.use("/allmyblogs", authBlogRouter);
 
 app.get("/", (req, res) => {
-  res.send("Welcome");
+  res.status(200).json({ message: "Welcome!" });
 });
 
 app.all("*", (req, res) => {
@@ -49,6 +49,9 @@ app.all("*", (req, res) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log("server is running");
-});
+// app.listen(process.env.PORT, () => {
+//   console.log("server is running");
+// });
+
+// exporting the server
+export default app;
