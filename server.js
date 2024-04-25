@@ -17,22 +17,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 dotenv.config();
 
-mongoose
-  .connect(process.env.MONGODB)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((error) => {
-    console.log("Error: ", error);
-  });
+// mongoose
+//   .connect(process.env.MONGODB)
+//   .then(() => {
+//     console.log("Connected to MongoDB");
+//   })
+//   .catch((error) => {
+//     console.log("Error: ", error);
+//   });
 
-// async main() => {
-//   // try-catch
-//   const MONGO = 'mongodb+srv://an:abc@abc-2yzxs.mongodb.net/testretryWrites=true&w=majority'
-//   const client = await connect(MONGO, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true })
-// }
 
 app.use("/", userRouter);
 app.use("/blogs", blogRouter);
