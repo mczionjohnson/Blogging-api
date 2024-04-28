@@ -17,14 +17,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 dotenv.config();
 
-// mongoose
-//   .connect(process.env.MONGODB)
-//   .then(() => {
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch((error) => {
-//     console.log("Error: ", error);
-//   });
+mongoose
+  .connect(process.env.MONGODB)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((error) => {
+    console.log("Error: ", error);
+  });
 
 
 app.use("/", userRouter);

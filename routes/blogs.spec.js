@@ -10,3 +10,5 @@ it("Gets the home endpoint", async () => {
   expect(response.status).toBe(200);
   expect(response.body.message).toBe("Welcome!");
 });
+
+
