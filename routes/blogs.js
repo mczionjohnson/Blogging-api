@@ -24,6 +24,8 @@ blogRouter.get("/:blogId", async (req, res) => {
       );
 
       res.status(200).json({ message: "Blog found", singleBlog });
+    // console.log(`Success: ${user.email} viewed a blog`);
+
     }
   } catch {
     res.status(404).json({ message: "not found" });

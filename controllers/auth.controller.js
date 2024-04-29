@@ -8,6 +8,7 @@ export const getAuthBlogs = async (req, res) => {
     limit = limit < 1 ? 20 : limit;
     const query = req.query.q;
     const userId = req.user._id;
+    const email = req.user.email;
 
     const { data, meta } = await authService.getAuthBlogs(
       page,
@@ -16,11 +17,16 @@ export const getAuthBlogs = async (req, res) => {
       userId
     );
 
-    if (data.length === 0) {
-      res.status(404).json({ message: "Invalid query" });
-    } else {
-      res.json({ message: "Get all blogs", data, meta });
-    }
+    // if (data.length === 0) {
+    //   res.status(404).json({ message: "Invalid query" });
+    // }
+    // else {
+
+    // console.log(`Success: ${email} viewed all blog`);
+    res.status(200).json({ message: "Get all blogs", data, meta });
+
+
+    // }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

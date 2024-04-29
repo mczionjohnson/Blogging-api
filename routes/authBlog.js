@@ -15,6 +15,7 @@ authBlogRouter.get("/", authController.getAuthBlogs);
 
 authBlogRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
+  const email = req.user.email;
 
   try {
     const singleBlog = await Blog.findOne({ _id: blogId });
@@ -23,7 +24,11 @@ authBlogRouter.get("/:blogId", async (req, res) => {
       { $inc: { readCount: 1 } } /* no more callback */
     );
 
-    res.json(singleBlog);
+    // res.json(singleBlog);
+    res.status(200).json({ message: "viewing a blog", Blog: singleBlog });
+    console.log(`Success: ${email} viewed a blog`);
+
+
   } catch {
     res.status(404).json({ message: "not found" });
   }
@@ -71,7 +76,9 @@ authBlogRouter.post("/", async (req, res) => {
 
         const savedBlog = await blog.save();
 
-        res.json({ message: "Blog created", savedBlog });
+        res.status(200).json({ message: "Blog created", savedBlog });
+        console.log(`Success: ${user.email} posted a blog`);
+
       }
     });
   }
@@ -138,7 +145,7 @@ authBlogRouter.patch("/:blogId", async (req, res) => {
           }
 
           console.log(`Success: ${user.email} updated a blog`);
-          res.json({ message: "Blog Updated", Blog: updatedBlog });
+          res.status(200).json({ message: "Blog Updated", Blog: updatedBlog });
         } else {
           // in case of error
           const realOwner = await User.findOne({ _id: singleBlog.user });
