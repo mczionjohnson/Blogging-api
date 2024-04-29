@@ -1,4 +1,5 @@
 import * as userService from "../services/user.service.js";
+import logger from '../logger.js'
 
 export const getAllBlogs = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ export const getAllBlogs = async (req, res) => {
 
     const { data, meta } = await userService.getAllBlogs(page, limit, query);
     res.status(200).json({ message: "Get all blogs", data, meta });
-    // console.log("Success: unregistered user viewed all blog");
+    // logger.info("Success: unregistered user viewed all blog");
 
   } catch (error) {
     res.status(500).json({ message: error.message });

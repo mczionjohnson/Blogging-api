@@ -27,11 +27,11 @@ it("Should save user to database", async () => {
 
   // Ensures response contains email
   expect(res.body.savedUser.email).toBeTruthy();
-  // console.log(res.body.savedUser.email);
+  // logger.info(res.body.savedUser.email);
 
   // It should LOGIN a user
   const userId = res.body.savedUser._id;
-  // console.log(userId)
+  // logger.info(userId)
   res = await request.post("/login").send({
     email: "testing@gmail.com",
     password: "qwertyuiop00",
@@ -41,7 +41,7 @@ it("Should save user to database", async () => {
   expect(res.body.token).toBeTruthy();
 
   const token = res.body.token;
-  // console.log(token)
+  // logger.info(token)
 
   // should GET all protected blogs
   res = await request
@@ -51,7 +51,7 @@ it("Should save user to database", async () => {
   .expect("Content-Type", /json/)
   .expect(200)
   expect(res.body).toBeTruthy();
-  // // console.log(res.body)
+  // // logger.info(res.body)
 
 // It should POST a blog to a protected route
   res = await request
@@ -67,11 +67,11 @@ it("Should save user to database", async () => {
   "blogBody": "Step 1: boil water"
 })
 expect(res.body.savedBlog).toBeTruthy();
-// console.log(res.body)
+// logger.info(res.body)
 
 // It should GET a protected blog
 let singleBlog =  res.body.savedBlog._id
-// console.log(res.body.savedBlog._id)
+// logger.info(res.body.savedBlog._id)
 
 res = await request
 .get(`/allmyblogs/${singleBlog}`)
@@ -82,7 +82,7 @@ res = await request
 
 
 expect(res.body.Blog).toBeTruthy();
-// console.log(res.body)
+// logger.info(res.body)
 
 // It should PATCH a protected blog
 res = await request
@@ -100,7 +100,7 @@ res = await request
 })
 
 expect(res.body.Blog).toBeTruthy();
-// console.log(res.body)
+// logger.info(res.body)
 
 // it should DELETE a protected blog
 
@@ -112,7 +112,7 @@ expect(res.body.Blog).toBeTruthy();
 // .expect(200)
 
 // expect(res.body.Blog).toBeTruthy();
-// console.log(res.body)
+// logger.info(res.body)
 
   await User.deleteMany();
   await Blog.deleteMany();

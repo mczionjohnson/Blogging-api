@@ -1,5 +1,3 @@
-// import { jest } from "jest";
-
 import Blog from "../models/blogSchema";
 import * as UserService from "./user.service";
 

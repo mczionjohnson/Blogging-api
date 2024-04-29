@@ -1,4 +1,5 @@
 import { Router } from "express";
+import logger from '../logger.js'
 
 import Blog from "../models/blogSchema.js";
 import User from "../models/userSchema.js";
@@ -26,11 +27,12 @@ authBlogRouter.get("/:blogId", async (req, res) => {
 
     // res.json(singleBlog);
     res.status(200).json({ message: "viewing a blog", Blog: singleBlog });
-    console.log(`Success: ${email} viewed a blog`);
+    logger.info(`Success: ${email} viewed a blog`);
 
 
   } catch {
     res.status(404).json({ message: "not found" });
+
   }
 });
 
@@ -45,13 +47,13 @@ authBlogRouter.post("/", async (req, res) => {
     // SECRET is stored in .env
     jwt.verify(token, process.env.JWT_SECRET, async (err, authToken) => {
       const email = authToken.email;
-      // console.log(authToken)
+      // logger.info(authToken)
       if (err) {
         res.redirect("/");
       } else {
         let user = await User.findOne({ email });
 
-        // console.log(user);
+        // logger.info(user);
 
         const count = Object.keys(req.body.blogBody).length;
         const readingTime = count;
@@ -77,7 +79,7 @@ authBlogRouter.post("/", async (req, res) => {
         const savedBlog = await blog.save();
 
         res.status(200).json({ message: "Blog created", savedBlog });
-        console.log(`Success: ${user.email} posted a blog`);
+        logger.info(`Success: ${user.email} posted a blog`);
 
       }
     });
@@ -130,7 +132,7 @@ authBlogRouter.patch("/:blogId", async (req, res) => {
           if (state) {
             payload.state = state;
           }
-          // console.log(payload)
+          // logger.info(payload)
 
           const updatedBlog = await Blog.findOneAndUpdate(
             { _id: blogId },
@@ -144,12 +146,12 @@ authBlogRouter.patch("/:blogId", async (req, res) => {
             return res.status(400).json({ message: "Blog not found" });
           }
 
-          console.log(`Success: ${user.email} updated a blog`);
+          logger.info(`Success: ${user.email} updated a blog`);
           res.status(200).json({ message: "Blog Updated", Blog: updatedBlog });
         } else {
           // in case of error
           const realOwner = await User.findOne({ _id: singleBlog.user });
-          console.log(`Edit not allowed, the owner is ${realOwner.email}`);
+          logger.error(`Edit not allowed, the owner is ${realOwner.email}`);
           res.json({ message: "Unsuccesful, You are not the owner" });
         }
       }
@@ -186,11 +188,11 @@ authBlogRouter.delete("/:blogId", async (req, res) => {
             _id: blogId,
           });
           res.json({ message: "Blog Deleted", deletedBlog });
-          console.log(`Success: ${user.email} deleted a blog`);
+          logger.info(`Success: ${user.email} deleted a blog`);
         } else {
           // in case of error
           const realOwner = await User.findOne({ _id: singleBlog.user });
-          console.log(`Delete not allowed, the owner is ${realOwner.email}`);
+          logger.error(`Delete not allowed, the owner is ${realOwner.email}`);
           res.json({ message: "Unsuccesful, You are not the owner" });
         }
       }

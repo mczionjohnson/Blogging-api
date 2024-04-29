@@ -25,7 +25,7 @@ it("Should save user to database", async () => {
 
   // Ensures response contains email
   expect(res.body.savedUser.email).toBeTruthy();
-  // console.log(res.body.savedUser.email)
+  // logger.info(res.body.savedUser.email)
 });
 
 // Cleans up database between each test

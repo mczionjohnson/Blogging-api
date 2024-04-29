@@ -1,4 +1,6 @@
 import Blog from "../models/blogSchema.js";
+import logger from '../logger.js'
+
 
 export const getAllBlogs = async (page = 1, limit = 20, query) => {
   try {
@@ -22,7 +24,7 @@ export const getAllBlogs = async (page = 1, limit = 20, query) => {
           { $and: [searchConditionThree, { state: "published" }] },
         ],
       })
-        .sort({ readCount: 1, readingTime: -1, timestamps: 1 })
+        .sort({ readCount: -1, readingTime: 1, timestamps: -1 })
         .skip(skip)
         .limit(limit);
 
@@ -36,6 +38,6 @@ export const getAllBlogs = async (page = 1, limit = 20, query) => {
       return { data: publishedBlogs, meta: { page, limit } };
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };

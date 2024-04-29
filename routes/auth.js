@@ -1,4 +1,6 @@
 import { Router } from "express";
+import logger from '../logger.js'
+
 
 import User from "../models/userSchema.js";
 import Jwt from "jsonwebtoken";
@@ -46,13 +48,13 @@ userRouter.post("/signup", async (req, res) => {
   if (password) {
     payload.password = password;
   }
-    // console.log(payload);
+    // logger.info(payload);
 
   const user = new User({
     ...payload,
   });
   const savedUser = await user.save();
-  // console.log(savedUser);
+  // logger.info(savedUser);
 
   res.json({ message: "Success", savedUser });
 });
@@ -86,7 +88,7 @@ userRouter.post("/login", async (req, res) => {
     JWT_SECRET,
     { expiresIn: "1hr" }
   );
-  //   console.log(token);
+  //   logger.info(token);
   return res.json({ token });
 });
 

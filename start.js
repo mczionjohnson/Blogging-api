@@ -1,8 +1,10 @@
 // start.js
 import app from "./server.js";
+import logger from './logger.js'
+
 
 app.listen(process.env.PORT, () => {
-  console.log("server is running");
+  logger.info("server is running");
 });
 
 // app.listen(3000);

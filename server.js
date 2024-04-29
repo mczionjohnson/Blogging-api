@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
-// import { connect } from 'mongodb'
 
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import logger from './logger.js'
 
 import userRouter from "./routes/auth.js";
 import blogRouter from "./routes/blogs.js";
@@ -15,16 +15,17 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
 dotenv.config();
 
-// mongoose
-//   .connect(process.env.MONGODB)
-//   .then(() => {
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch((error) => {
-//     console.log("Error: ", error);
-//   });
+mongoose
+  .connect(process.env.MONGODB)
+  .then(() => {
+    logger.info("Connected to MongoDB");
+  })
+  .catch((error) => {
+    logger.error("Error: ", error);
+  });
 
 
 app.use("/", userRouter);
@@ -42,9 +43,6 @@ app.all("*", (req, res) => {
   });
 });
 
-// app.listen(process.env.PORT, () => {
-//   console.log("server is running");
-// });
 
 // exporting the server
 export default app;

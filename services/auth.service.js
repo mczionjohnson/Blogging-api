@@ -1,4 +1,5 @@
 import Blog from "../models/blogSchema.js";
+import logger from '../logger.js'
 
 export const getAuthBlogs = async (
   page = 1,
@@ -36,7 +37,7 @@ export const getAuthBlogs = async (
       })
         .skip(skip)
         .limit(limit)
-        .sort({ readCount: 1, readingTime: -1, timestamp: 1 });
+        .sort({ readCount: -1, readingTime: 1, timestamp: -1 });
         // skip
         // limit
         // sort
@@ -44,6 +45,6 @@ export const getAuthBlogs = async (
       return { data: searchData, meta: { page, limit } };
     }
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 };

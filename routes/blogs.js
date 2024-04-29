@@ -1,4 +1,6 @@
 import { Router } from "express";
+import logger from '../logger.js'
+
 
 import Blog from "../models/blogSchema.js";
 import * as userController from "../controllers/user.controller.js";
@@ -24,7 +26,7 @@ blogRouter.get("/:blogId", async (req, res) => {
       );
 
       res.status(200).json({ message: "Blog found", singleBlog });
-    // console.log(`Success: ${user.email} viewed a blog`);
+    // logger.info(`Success: ${user.email} viewed a blog`);
 
     }
   } catch {

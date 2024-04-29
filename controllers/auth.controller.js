@@ -1,5 +1,6 @@
 import * as authService from "../services/auth.service.js";
 
+
 export const getAuthBlogs = async (req, res) => {
   try {
     let page = Number(req.query.page) || 1;
@@ -22,7 +23,7 @@ export const getAuthBlogs = async (req, res) => {
     // }
     // else {
 
-    // console.log(`Success: ${email} viewed all blog`);
+    // logger.info(`Success: ${email} viewed all blog`);
     res.status(200).json({ message: "Get all blogs", data, meta });
 
 
