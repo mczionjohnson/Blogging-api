@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import logger from './logger.js'
+import logger from './logger/logger.js'
 
 import userRouter from "./routes/auth.js";
 import blogRouter from "./routes/blogs.js";

@@ -1,6 +1,6 @@
 // start.js
 import app from "./server.js";
-import logger from './logger.js'
+import logger from './logger/logger.js'
 
 
 app.listen(process.env.PORT, () => {

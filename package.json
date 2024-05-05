@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node start.js",
-    "dev": "nodemon start.js",
+    "dev": "nodemon src/start.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
