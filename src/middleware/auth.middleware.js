@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import logger from '../logger/logger.js'
 
 
-const auth = (req, res, next) => {
+const checkAuth = (req, res, next) => {
   // logger.debug("Auth middleware");
   // get the Authorization header
   const authorization = req.headers.authorization;
@@ -26,4 +26,4 @@ const auth = (req, res, next) => {
   });
 };
 
-export default auth;
+export default checkAuth;

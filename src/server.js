@@ -3,9 +3,9 @@ import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import db from "./database/connection.js";
-import indexRouter from "./routes/auth.js";
-import blogRouter from "./routes/userBlog.js";
-import authBlogRouter from "./routes/authBlog.js";
+import indexRouter from "./routes/index.js";
+import blogRouter from "./routes/Blog.js";
+import authBlogRouter from "./routes/userBlog.js";
 
 const app = express();
 
