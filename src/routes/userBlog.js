@@ -3,12 +3,13 @@ import logger from '../logger/logger.js'
 
 
 import Blog from "../models/blogSchema.js";
-import * as userController from "../controllers/user.controller.js";
+import * as userController from "../controllers/userBlog.controller.js";
 
 const blogRouter = Router();
 
 blogRouter.get("/", userController.getAllBlogs);
 
+// move to userController
 blogRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
 

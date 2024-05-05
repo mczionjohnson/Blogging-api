@@ -5,8 +5,8 @@ import Blog from "../models/blogSchema.js";
 import User from "../models/userSchema.js";
 
 import jwt from "jsonwebtoken";
-import auth from "../middleware/auth.js";
-import * as authController from "../controllers/auth.controller.js";
+import auth from "../middleware/auth.middleware.js";
+import * as authController from "../controllers/authBlog.controller.js";
 
 const authBlogRouter = Router();
 
@@ -14,6 +14,8 @@ authBlogRouter.all("*", auth);
 
 authBlogRouter.get("/", authController.getAuthBlogs);
 
+
+// move this code below to the authController
 authBlogRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
   const email = req.user.email;

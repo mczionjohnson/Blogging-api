@@ -3,8 +3,8 @@ import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import db from "./database/connection.js";
-import userRouter from "./routes/auth.js";
-import blogRouter from "./routes/blogs.js";
+import indexRouter from "./routes/auth.js";
+import blogRouter from "./routes/userBlog.js";
 import authBlogRouter from "./routes/authBlog.js";
 
 const app = express();
@@ -17,13 +17,11 @@ dotenv.config();
 
 db();
 
-app.use("/", userRouter);
+app.use("/", indexRouter);
 app.use("/blogs", blogRouter);
 app.use("/allmyblogs", authBlogRouter);
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome!" });
-});
+
 
 app.all("*", (req, res) => {
   res.status(404);
