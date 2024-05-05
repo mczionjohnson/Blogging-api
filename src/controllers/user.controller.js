@@ -1,5 +1,5 @@
 import * as userService from "../services/user.service.js";
-import logger from '../logger.js'
+import logger from '../logger/logger.js'
 
 export const getAllBlogs = async (req, res) => {
   try {

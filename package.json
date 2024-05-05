@@ -1,11 +1,11 @@
 {
   "name": "blog-city",
   "version": "1.0.0",
-  "description": "",
+  "description": "a blogging app",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "node start.js",
+    "start": "npm run src/start.js",
     "dev": "nodemon src/start.js",
     "test": "jest",
     "test:watch": "jest --watch"

@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import logger from '../../logger/logger.js'
+import logger from '../logger/logger.js'
 
 
 const auth = (req, res, next) => {

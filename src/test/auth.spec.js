@@ -1,4 +1,4 @@
-import app from "../server"; // Link to your server file
+import app from "../server.js"; // Link to your server file
 import supertest from "supertest";
 import mongoose from "mongoose";
 import User from "../models/userSchema.js";

@@ -1,11 +1,11 @@
 import { Router } from "express";
-import logger from '../logger.js'
+import logger from '../logger/logger.js'
 
 import Blog from "../models/blogSchema.js";
 import User from "../models/userSchema.js";
 
 import jwt from "jsonwebtoken";
-import auth from "../authentication/auth.js";
+import auth from "../middleware/auth.js";
 import * as authController from "../controllers/auth.controller.js";
 
 const authBlogRouter = Router();

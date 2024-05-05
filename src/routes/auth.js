@@ -1,13 +1,15 @@
 import { Router } from "express";
-import logger from '../logger.js'
+import logger from '../logger/logger.js'
 
+import { generateMiddleWare } from "../middleware/route.middleware.js"
+import { loginSchema, registerSchema } from "../validation/auth.validation.js"
 
 import User from "../models/userSchema.js";
 import Jwt from "jsonwebtoken";
 
 const userRouter = Router();
 
-userRouter.post("/signup", async (req, res) => {
+userRouter.post("/signup", generateMiddleWare(registerSchema), async (req, res) => {
   res.setHeader("Content-Type", "application/json");
 
   const email = req.body.email;
@@ -59,7 +61,7 @@ userRouter.post("/signup", async (req, res) => {
   res.json({ message: "Success", savedUser });
 });
 
-userRouter.post("/login", async (req, res) => {
+userRouter.post("/login", generateMiddleWare(loginSchema), async (req, res) => {
   res.setHeader("Content-Type", "application/json");
 
   const email = req.body.email;

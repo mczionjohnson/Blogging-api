@@ -1,5 +1,5 @@
 import Blog from "../models/blogSchema";
-import * as UserService from "./user.service";
+import * as UserService from "../services/user.service";
 
 describe("Service: User Service", function () {
   // let User;

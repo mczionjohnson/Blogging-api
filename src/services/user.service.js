@@ -1,5 +1,5 @@
 import Blog from "../models/blogSchema.js";
-import logger from '../logger.js'
+import logger from '../logger/logger.js'
 
 
 export const getAllBlogs = async (page = 1, limit = 20, query) => {
