@@ -10,7 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "author": "Zion Johnson",
+  "author": "Zion",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.24.4",
