@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "npm run src/start.js",
+    "start": "node src/start.js",
     "dev": "nodemon src/start.js",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -23,6 +23,7 @@
     "joi": "^17.13.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
+    "node": "^22.2.0",
     "winston": "^3.13.0"
   },
   "jest": {
