@@ -1,5 +1,3 @@
-# blogging-api
-
 # Blogging-api
 [![Build Status]]
 [![Coverage Status]]
