@@ -25,6 +25,7 @@ const options = {
       handleExceptions: true,
       json: false,
       colorize: true,
+      format: winston.format.simple()
   },
 };
 
