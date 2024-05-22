@@ -25,6 +25,8 @@
     "joi": "^17.13.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
+    "morgan": "^1.10.0",
+    "morgan-json-fixed": "^1.1.3",
     "node": "^22.2.0",
     "winston": "^3.13.0"
   },
