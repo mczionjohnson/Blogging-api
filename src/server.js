@@ -2,27 +2,26 @@ import express from "express";
 
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 
+import limiter from "./config/rateLimiter.js"
 import db from "./database/connection.js";
+import httpLogger from "./logger/httpLogger.js";
+
 import indexRouter from "./routes/index.js";
 import blogRouter from "./routes/Blog.js";
 import authBlogRouter from "./routes/userBlog.js";
 
 const app = express();
 
-// Defaults to in-memory store.
-// You can use redis or any other store.
-const limiter = rateLimit({
-  windowMs: 0.5 * 60 * 1000, // half a minute
-  max: 4, // Limit each IP to 4 requests per `window` (here, per half a minute)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
+// Apply the rate limiting middleware to all requests globally
+app.use(limiter);
 
 //add secuirty
 app.use(helmet());
+
+// for morgan
+app.use(httpLogger);
 
 // Apply the rate limiting middleware to all requests
 app.use(limiter);
