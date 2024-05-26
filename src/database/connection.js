@@ -5,7 +5,7 @@ import logger from '../logger/logger.js'
 
 const db = () => {
   mongoose
-  .connect(process.env.MONGODB)
+  .connect(process.env.DEV_DATABASE)
   .then(() => {
     logger.info("Connected to MongoDB");
   })
