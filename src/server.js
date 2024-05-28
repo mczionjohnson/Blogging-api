@@ -11,7 +11,7 @@ import httpLogger from "./logger/httpLogger.js";
 import indexRouter from "./routes/index.js";
 import blogRouter from "./routes/Blog.js";
 import authBlogRouter from "./routes/userBlog.js";
-import redisClient from "./integrations/redis.js"
+// import redisClient from "./integrations/redis.js"
 
 const app = express();
 
@@ -33,7 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 dotenv.config();
 
 db();
-redisClient.connect()
+// redisClient.connect()
 
 app.use("/", indexRouter);
 app.use("/blogs", blogRouter);

@@ -1,6 +1,6 @@
 import * as userService from "./services/blog.service.js";
 import logger from "../logger/logger.js";
-import redisClient from "../integrations/redis.js";
+
 
 export const getAllBlogs = async (req, res) => {
   try {
