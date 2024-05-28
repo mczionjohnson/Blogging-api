@@ -1,5 +1,6 @@
 import * as userService from "./services/blog.service.js";
-import logger from '../logger/logger.js'
+import logger from "../logger/logger.js";
+import redisClient from "../integrations/redis.js";
 
 export const getAllBlogs = async (req, res) => {
   try {
@@ -10,9 +11,9 @@ export const getAllBlogs = async (req, res) => {
     const query = req.query.q;
 
     const { data, meta } = await userService.getAllBlogs(page, limit, query);
-    res.status(200).json({ message: "Get all blogs", data, meta });
-    // logger.info("Success: unregistered user viewed all blog");
 
+    return res.status(200).json({ message: "Get all blogs", data, meta });
+    // logger.info("Success: unregistered user viewed all blog");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
