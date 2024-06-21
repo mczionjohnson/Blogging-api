@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 dotenv.config();
 
-db();
+// db();
 // redisClient.connect()
 
 app.use("/", indexRouter);
