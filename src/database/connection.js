@@ -1,8 +1,5 @@
 import mongoose from "mongoose";
 import logger from '../logger/logger.js'
-import dotenv from "dotenv";
-
-dotenv.config();
 
 
 const db = () => {
