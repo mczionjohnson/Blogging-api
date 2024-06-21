@@ -7,7 +7,7 @@ const request = supertest(app);
 
 // connect to mongoose before any other request
 beforeAll(async () => {
-  const url = process.env.atlasDbAlt;
+  const url = process.env.TEST_DATABASE;
   await mongoose.connect(url);
 });
 

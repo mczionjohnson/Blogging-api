@@ -8,7 +8,7 @@ import { authLogin, authSignup } from "../controllers/auth.controller.js"
 
 const indexRouter = Router();
 
-indexRouter.get("/", (req, res) => {
+indexRouter.get("/", async (req, res) => {
   res.status(200).json({ message: "Welcome!" });
 });
 
