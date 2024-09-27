@@ -1,16 +1,16 @@
 import { Router } from "express";
-import logger from '../logger/logger.js'
+// import logger from '../logger/logger.js'
 
 
 import Blog from "../models/blogSchema.js";
 import * as userController from "../controllers/blog.controller.js";
 
-const blogRouter = Router();
+const clientRouter = Router();
 
-blogRouter.get("/", userController.getAllBlogs);
+clientRouter.get("/", userController.getAllBlogs);
 
 // move to userController
-blogRouter.get("/:blogId", async (req, res) => {
+clientRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
 
   try {
@@ -35,4 +35,4 @@ blogRouter.get("/:blogId", async (req, res) => {
   }
 });
 
-export default blogRouter;
+export default clientRouter;

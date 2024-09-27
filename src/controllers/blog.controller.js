@@ -12,7 +12,7 @@ export const getAllBlogs = async (req, res) => {
 
     const { data, meta } = await userService.getAllBlogs(query);
 
-    return res.status(200).json({ message: "Get all blogs", data });
+    return res.status(200).json({ message: "Get all whistles", data });
     // logger.info("Success: unregistered user viewed all blog");
   } catch (error) {
     res.status(500).json({ message: error.message });

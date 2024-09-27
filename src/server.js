@@ -9,8 +9,8 @@ import db from "./database/connection.js";
 import httpLogger from "./logger/httpLogger.js";
 
 import indexRouter from "./routes/index.js";
-import blogRouter from "./routes/Blog.js";
-import authBlogRouter from "./routes/userBlog.js";
+import clientRouter from "./routes/client.js";
+import authRouter from "./routes/auth.js";
 // import redisClient from "./integrations/redis.js"
 
 const app = express();
@@ -34,8 +34,8 @@ db();
 // redisClient.connect()
 
 app.use("/api/v1", indexRouter);
-app.use("/api/v1/blogs", blogRouter);
-app.use("/api/v1/allmyblogs", authBlogRouter);
+app.use("/api/v1/whistles", clientRouter);
+app.use("/api/v1/mywhistles", authRouter);
 
 app.all("*", (req, res) => {
   res.status(404);

@@ -9,17 +9,17 @@ import checkAuth from "../middleware/auth.middleware.js";
 
 import * as authController from "../controllers/userBlog.controller.js";
 
-const authBlogRouter = Router();
+const authRouter = Router();
 
 //check token for routes
-authBlogRouter.all("*", checkAuth);
+authRouter.all("*", checkAuth);
 
 
-authBlogRouter.get("/", authController.getAuthBlogs);
+authRouter.get("/", authController.getAuthBlogs);
 
 
 // move this code below to the authController
-authBlogRouter.get("/:blogId", async (req, res) => {
+authRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
   const email = req.user.email;
 
@@ -41,7 +41,7 @@ authBlogRouter.get("/:blogId", async (req, res) => {
   }
 });
 
-authBlogRouter.post("/", async (req, res) => {
+authRouter.post("/", async (req, res) => {
   let token = req.headers.authorization;
   token = token.split(" ")[1];
 
@@ -91,7 +91,7 @@ authBlogRouter.post("/", async (req, res) => {
   }
 });
 
-authBlogRouter.patch("/:blogId", async (req, res) => {
+authRouter.patch("/:blogId", async (req, res) => {
   const { blogId } = req.params;
   const { title, description, tags, blogBody, state } = req.body;
 
@@ -164,7 +164,7 @@ authBlogRouter.patch("/:blogId", async (req, res) => {
   }
 });
 
-authBlogRouter.delete("/:blogId", async (req, res) => {
+authRouter.delete("/:blogId", async (req, res) => {
   const { blogId } = req.params;
 
   let token = req.headers.authorization;
@@ -205,4 +205,4 @@ authBlogRouter.delete("/:blogId", async (req, res) => {
   }
 });
 
-export default authBlogRouter;
+export default authRouter;
