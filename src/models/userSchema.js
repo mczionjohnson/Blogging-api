@@ -3,10 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 const userSchema = mongoose.Schema({
-  firstName: {
-    type: String,
-  },
-  lastName: {
+  username: {
     type: String,
   },
   email: {

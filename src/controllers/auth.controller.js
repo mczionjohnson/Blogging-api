@@ -1,4 +1,4 @@
-import logger from "../logger/logger.js";
+// import logger from "../logger/logger.js";
 
 import User from "../models/userSchema.js";
 import Jwt from "jsonwebtoken";
@@ -8,8 +8,7 @@ export const authSignup = async (req, res) => {
 
   const email = req.body.email;
   const password = req.body.password;
-  const firstName = req.body.firstName;
-  const lastName = req.body.lastName;
+  const username = req.body.username;
 
   const checkUser = await User.findOne({ email });
   if (checkUser) {
@@ -24,19 +23,13 @@ export const authSignup = async (req, res) => {
   if (!password) {
     return res.status(400).json({ message: "Enter password" });
   }
-  if (!firstName) {
-    return res.status(400).json({ message: "Enter first name" });
-  }
-  if (!lastName) {
-    return res.status(400).json({ message: "Enter last name" });
+  if (!username) {
+    return res.status(400).json({ message: "Enter  username" });
   }
 
   const payload = {};
-  if (firstName) {
-    payload.firstName = firstName;
-  }
-  if (lastName) {
-    payload.lastName = lastName;
+  if (username) {
+    payload.username = username;
   }
   if (email) {
     payload.email = email;
@@ -67,24 +60,50 @@ export const authLogin = async (req, res) => {
   if (!password) {
     return res.status(400).json({ message: "Enter password" });
   }
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-  const checkPassword = await user.isValidPassword(password);
-  if (checkPassword == false) {
-    return res.status(401).json({ message: "Password is incorrect" });
-  } else {
-    const secret = process.env.JWT_SECRET;
-    const token = Jwt.sign(
-      {
-        email: user.email,
-        _id: user._id,
-      },
-      secret,
-      { expiresIn: "1hr" }
-    );
-    //   logger.info(token);
-    return res.json({ token });
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    try {
+      const checkPassword = await user.isValidPassword(password);
+
+      if (checkPassword == false) {
+        return res.status(401).json({ message: "Password is incorrect" });
+      } else {
+        const secret = process.env.JWT_SECRET;
+
+        const token = Jwt.sign(
+          {
+            email: user.email,
+            _id: user._id,
+          },
+          secret,
+          { expiresIn: "1hr" }
+        );
+
+        // add job to the queue
+        // const data = {
+        //   jobId: Math.random() * 10000,
+        //   jobName: 'SendLoginAlert',
+        //   email: user.email,
+        // }
+        // Producer(data); // creates data in queue
+        // console.log("job added to the queue")
+
+        res.cookie("jwt", token, { httpOnly: true });
+
+        return res.json({
+          message:
+            "logged in successfully, token in cookies, expires in an hour",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({ message: error });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error });
   }
 };

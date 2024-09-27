@@ -9,11 +9,11 @@ import { authLogin, authSignup } from "../controllers/auth.controller.js"
 const indexRouter = Router();
 
 indexRouter.get("/", async (req, res) => {
-  res.status(200).json({ message: "Welcome!" });
+  res.status(200).json({ message: "Welcome! let's pen" });
 });
 
 // plug the validation into
-indexRouter.post("/signup", generateMiddleWare(registerSchema), authSignup)
+indexRouter.post("/register", generateMiddleWare(registerSchema), authSignup)
 
 indexRouter.post("/login", generateMiddleWare(loginSchema), authLogin)
 

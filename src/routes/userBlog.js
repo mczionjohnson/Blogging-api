@@ -11,7 +11,9 @@ import * as authController from "../controllers/userBlog.controller.js";
 
 const authBlogRouter = Router();
 
+//check token for routes
 authBlogRouter.all("*", checkAuth);
+
 
 authBlogRouter.get("/", authController.getAuthBlogs);
 
