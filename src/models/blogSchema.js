@@ -1,16 +1,6 @@
 import mongoose from "mongoose";
 
 const blogSchema = mongoose.Schema({
-  title: {
-    type: "string",
-  },
-  description: {
-    type: "string",
-  },
-  author: {
-    type: "string",
-  },
-
   // mongoose.Schema.Types.ObjectId tells model that users is another table in the collection
   // the ref states the table
   user: {
@@ -23,10 +13,7 @@ const blogSchema = mongoose.Schema({
     default: "draft",
     enum: ["draft", "published"],
   },
-  tags: {
-    type: "string",
-  },
-  blogBody: {
+  body: {
     type: String,
     required: true,
   },

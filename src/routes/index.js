@@ -9,7 +9,7 @@ import { authLogin, authSignup } from "../controllers/auth.controller.js"
 const indexRouter = Router();
 
 indexRouter.get("/", async (req, res) => {
-  res.status(200).json({ message: "Welcome! let's pen" });
+  res.status(200).json({ message: "Whistling!" });
 });
 
 // plug the validation into

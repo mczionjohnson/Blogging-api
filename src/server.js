@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 
-import limiter from "./config/rateLimiter.js";
+// import limiter from "./config/rateLimiter.js";
 import db from "./database/connection.js";
 import httpLogger from "./logger/httpLogger.js";
 
@@ -16,7 +16,7 @@ import authBlogRouter from "./routes/userBlog.js";
 const app = express();
 
 // Apply the rate limiting middleware to all requests globally
-app.use(limiter);
+// app.use(limiter);
 
 //add secuirty
 app.use(helmet());
