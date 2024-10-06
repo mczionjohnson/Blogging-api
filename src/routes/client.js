@@ -14,11 +14,11 @@ clientRouter.get("/:blogId", async (req, res) => {
   const { blogId } = req.params;
 
   try {
-    const singleBlog = await Blog.find({
+    const singleWhistle = await Blog.find({
       _id: blogId,
       state: "published",
     });
-    if (!singleBlog) {
+    if (!singleWhistle) {
       return res.json({ message: " not found" });
     } else {
       await Blog.findOneAndUpdate(
@@ -26,7 +26,7 @@ clientRouter.get("/:blogId", async (req, res) => {
         { $inc: { readCount: 1 } } /* no more callback */
       );
 
-      res.status(200).json({ message: "Blog found", singleBlog });
+      res.status(200).json({ message: "Whistles found", singleWhistle });
     // logger.info(`Success: ${user.email} viewed a blog`);
 
     }

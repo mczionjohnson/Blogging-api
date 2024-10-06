@@ -1,5 +1,5 @@
 import { Router } from "express";
-import logger from '../logger/logger.js'
+import logger from "../logger/logger.js";
 
 import Blog from "../models/blogSchema.js";
 import User from "../models/userSchema.js";
@@ -14,9 +14,9 @@ const authRouter = Router();
 //check token for routes
 authRouter.all("*", checkAuth);
 
+authRouter.get("/profile", authController.getUserProfile);
 
-authRouter.get("/", authController.getAuthBlogs);
-
+authRouter.get("/mywhistles", authController.getAuthBlogs);
 
 // move this code below to the authController
 authRouter.get("/:blogId", async (req, res) => {
@@ -33,11 +33,8 @@ authRouter.get("/:blogId", async (req, res) => {
     // res.json(singleBlog);
     res.status(200).json({ message: "viewing a blog", Blog: singleBlog });
     logger.info(`Success: ${email} viewed a blog`);
-
-
   } catch {
     res.status(404).json({ message: "not found" });
-
   }
 });
 
@@ -85,7 +82,6 @@ authRouter.post("/", async (req, res) => {
 
         res.status(200).json({ message: "Blog created", savedBlog });
         logger.info(`Success: ${user.email} posted a blog`);
-
       }
     });
   }

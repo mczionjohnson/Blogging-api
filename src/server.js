@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 
+import cookieParser from 'cookie-parser'
+
 // import limiter from "./config/rateLimiter.js";
 import db from "./database/connection.js";
 import httpLogger from "./logger/httpLogger.js";
@@ -14,6 +16,10 @@ import authRouter from "./routes/auth.js";
 // import redisClient from "./integrations/redis.js"
 
 const app = express();
+
+// parse cookies
+app.use(cookieParser())
+
 
 // Apply the rate limiting middleware to all requests globally
 // app.use(limiter);
@@ -35,7 +41,7 @@ db();
 
 app.use("/api/v1", indexRouter);
 app.use("/api/v1/whistles", clientRouter);
-app.use("/api/v1/mywhistles", authRouter);
+app.use("/api/v1/user", authRouter);
 
 app.all("*", (req, res) => {
   res.status(404);

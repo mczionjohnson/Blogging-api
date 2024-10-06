@@ -60,50 +60,29 @@ export const authLogin = async (req, res) => {
   if (!password) {
     return res.status(400).json({ message: "Enter password" });
   }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  const checkPassword = await user.isValidPassword(password);
 
-  try {
-    const user = await User.findOne({ email });
+  if (checkPassword == false) {
+    return res.status(401).json({ message: "Password is incorrect" });
+  } else {
+    const secret = process.env.JWT_SECRET;
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    try {
-      const checkPassword = await user.isValidPassword(password);
+    const token = Jwt.sign(
+      {
+        email: user.email,
+        _id: user._id,
+      },
+      secret,
+      { expiresIn: "1hr" }
+    );
 
-      if (checkPassword == false) {
-        return res.status(401).json({ message: "Password is incorrect" });
-      } else {
-        const secret = process.env.JWT_SECRET;
-
-        const token = Jwt.sign(
-          {
-            email: user.email,
-            _id: user._id,
-          },
-          secret,
-          { expiresIn: "1hr" }
-        );
-
-        // add job to the queue
-        // const data = {
-        //   jobId: Math.random() * 10000,
-        //   jobName: 'SendLoginAlert',
-        //   email: user.email,
-        // }
-        // Producer(data); // creates data in queue
-        // console.log("job added to the queue")
-
-        res.cookie("jwt", token, { httpOnly: true });
-
-        return res.json({
-          message:
-            "logged in successfully, token in cookies, expires in an hour",
-        });
-      }
-    } catch (error) {
-      return res.status(500).json({ message: error });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error });
+    res.cookie("jwt", token, { httpOnly: true });
+    return res.json({
+      message: "logged in successfully, token in cookies, expires in an hour",
+    });
   }
 };
