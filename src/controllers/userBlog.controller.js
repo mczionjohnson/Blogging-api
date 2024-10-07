@@ -27,10 +27,12 @@ export const getUserProfile = async (req, res) => {
 export const getAuthBlogs = async (req, res) => {
   try {
     const query = req.query.q;
-    const userId = req.user._id;
-    const email = req.user.email;
+    // const userId = req.user._id;
+    const user = req.body.user;
+    const userId = user._id;
+    // const email = req.user.email;
 
-    const { data, meta } = await authService.getAuthBlogs(query, userId);
+    const { data } = await authService.getAuthBlogs(query, userId);
 
     // if (data.length === 0) {
     //   res.status(404).json({ message: "Invalid query" });

@@ -1,9 +1,8 @@
 import Blog from "../../models/blogSchema.js";
 import logger from "../../logger/logger.js";
 
-export const getAuthBlogs = async (query = null, userId) => {
+export const getAuthBlogs = async (query, userId) => {
   try {
-    const skip = (page - 1) * limit;
 
     // let authBlogs = await Blog.find({ user: userId }).skip(skip).limit(limit);
 

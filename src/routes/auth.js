@@ -19,20 +19,22 @@ authRouter.get("/profile", authController.getUserProfile);
 authRouter.get("/mywhistles", authController.getAuthBlogs);
 
 // move this code below to the authController
-authRouter.get("/:blogId", async (req, res) => {
+authRouter.get("/mywhistles/:blogId", async (req, res) => {
   const { blogId } = req.params;
-  const email = req.user.email;
-
+  const user = req.body.user;
+  const email = user.email;
+  //
   try {
-    const singleBlog = await Blog.findOne({ _id: blogId });
-    const show = await Blog.findOneAndUpdate(
-      { _id: blogId },
-      { $inc: { readCount: 1 } } /* no more callback */
-    );
-
-    // res.json(singleBlog);
-    res.status(200).json({ message: "viewing a blog", Blog: singleBlog });
-    logger.info(`Success: ${email} viewed a blog`);
+    const singleBlog = await Blog.find({
+      _id: blogId,
+    });
+    if (!singleBlog) {
+      return res.json({ message: "not found" });
+    } else {
+ 
+      res.status(200).json({ message: "viewing a blog", singleBlog });
+      logger.info(`Success: ${email} viewed a blog`);
+    }
   } catch {
     res.status(404).json({ message: "not found" });
   }

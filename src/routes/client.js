@@ -18,8 +18,9 @@ clientRouter.get("/:blogId", async (req, res) => {
       _id: blogId,
       state: "published",
     });
+    
     if (!singleWhistle) {
-      return res.json({ message: " not found" });
+      return res.json({ message: "not found" });
     } else {
       await Blog.findOneAndUpdate(
         { _id: blogId },
