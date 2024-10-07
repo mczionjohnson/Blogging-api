@@ -15,6 +15,9 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  whistleCreated: [],
+  whistleLiked: [],
+  whistleSaved: []
 });
 
 // The code in the UserScheme.pre() function is called a pre-hook.
