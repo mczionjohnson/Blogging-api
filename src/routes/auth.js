@@ -31,7 +31,6 @@ authRouter.get("/mywhistles/:blogId", async (req, res) => {
     if (!singleBlog) {
       return res.json({ message: "not found" });
     } else {
- 
       res.status(200).json({ message: "viewing a blog", singleBlog });
       logger.info(`Success: ${email} viewed a blog`);
     }
@@ -89,117 +88,66 @@ authRouter.post("/", async (req, res) => {
   }
 });
 
-authRouter.patch("/:blogId", async (req, res) => {
+authRouter.patch("/mywhistles/:blogId", async (req, res) => {
   const { blogId } = req.params;
-  const { title, description, tags, blogBody, state } = req.body;
+  const { body, state } = req.body;
 
-  let token = req.headers.authorization;
-  token = token.split(" ")[1];
+  const user = req.body.user;
+  const email = user.email;
 
-  if (!token) {
-    res.json("No token provided");
-  }
-  if (token) {
-    // SECRET is stored in .env
-    jwt.verify(token, process.env.JWT_SECRET, async (err, authToken) => {
-      if (err) {
-        res.redirect("/");
-      } else {
-        const email = authToken.email;
-        let user = await User.findOne({ email });
-        const singleBlog = await Blog.findOne({ _id: blogId });
+  let checkUser = await User.findOne({ email });
+  const singleBlog = await Blog.findOne({ _id: blogId });
 
-        // checking the real owner of a blog
-        // (user._id == singleBlog.user) will not work
-        // .equals special to mongoDb objectID type
-        if (user._id.equals(singleBlog.user)) {
-          if (!title && !description && !tags && !blogBody && !state) {
-            return res
-              .status(400)
-              .json({ message: "please provide an update" });
-          }
+  // checking the real owner of a blog
+  // (user._id == singleBlog.user) will not work
+  // .equals special to mongoDb objectID type
+  if (checkUser._id.equals(singleBlog.user)) {
+    if (!body && !state) {
+      return res.status(400).json({ message: "please provide an update" });
+    }
 
-          const payload = {};
-          if (title) {
-            payload.title = title;
-          }
-          if (description) {
-            payload.description = description;
-          }
-          if (tags) {
-            payload.tags = tags;
-          }
-          if (blogBody) {
-            payload.blogBody = blogBody;
-          }
-          if (state) {
-            payload.state = state;
-          }
-          // logger.info(payload)
+    const payload = {};
+    if (body) {
+      payload.body = body;
+    }
+    if (state) {
+      payload.state = state;
+    }
+    // logger.info(payload)
 
-          const updatedBlog = await Blog.findOneAndUpdate(
-            { _id: blogId },
-            payload,
-            {
-              new: true,
-            }
-          );
-
-          if (!updatedBlog) {
-            return res.status(400).json({ message: "Blog not found" });
-          }
-
-          logger.info(`Success: ${user.email} updated a blog`);
-          res.status(200).json({ message: "Blog Updated", Blog: updatedBlog });
-        } else {
-          // in case of error
-          const realOwner = await User.findOne({ _id: singleBlog.user });
-          logger.error(`Edit not allowed, the owner is ${realOwner.email}`);
-          res.json({ message: "Unsuccesful, You are not the owner" });
-        }
-      }
+    const updatedBlog = await Blog.findOneAndUpdate({ _id: blogId }, payload, {
+      new: true,
     });
+
+    if (!updatedBlog) {
+      return res.status(400).json({ message: "Blog not found" });
+    }
+
+    logger.info(`Success: ${user.email} updated a blog`);
+    res.status(200).json({ message: "Blog Updated", updatedBlog });
+  } else {
+    // in case of error
+    const realOwner = await User.findOne({ _id: singleBlog.user });
+    logger.error(`Edit not allowed, the owner is ${realOwner.email}`);
+    res.json({ message: "Unsuccesful, You are not the owner" });
   }
 });
 
-authRouter.delete("/:blogId", async (req, res) => {
+authRouter.delete("/mywhistles/:blogId", async (req, res) => {
   const { blogId } = req.params;
 
-  let token = req.headers.authorization;
-  token = token.split(" ")[1];
+  const user = req.body.user;
+  const id = user._id;
 
-  if (!token) {
-    res.json("No token provided");
-  }
-  if (token) {
-    // SECRET is stored in .env
-    jwt.verify(token, process.env.JWT_SECRET, async (err, authToken) => {
-      if (err) {
-        res.redirect("/");
-      } else {
-        const email = authToken.email;
-        let user = await User.findOne({ email });
-        const singleBlog = await Blog.findOne({ _id: blogId });
-
-        if (!singleBlog) {
-          res.json("Blog not found, probably wrong ID");
-        }
-        // (user._id == singleBlog.user) will not work
-        // .equals special to mongoDb objectID type
-        if (user._id.equals(singleBlog.user)) {
-          const deletedBlog = await Blog.deleteOne({
-            _id: blogId,
-          });
-          res.json({ message: "Blog Deleted", deletedBlog });
-          logger.info(`Success: ${user.email} deleted a blog`);
-        } else {
-          // in case of error
-          const realOwner = await User.findOne({ _id: singleBlog.user });
-          logger.error(`Delete not allowed, the owner is ${realOwner.email}`);
-          res.json({ message: "Unsuccesful, You are not the owner" });
-        }
-      }
+  try {
+    const deletedBlog = await Blog.deleteOne({
+      $and: [{ _id: blogId }, { user: id }],
     });
+    res.json({ message: "Blog Deleted", deletedBlog });
+    logger.info(`Success: ${user.email} deleted a blog`);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: "unsuccessful" });
   }
 });
 
