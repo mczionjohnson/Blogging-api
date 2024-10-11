@@ -1,29 +1,32 @@
 import jwt from "jsonwebtoken";
-import logger from '../logger/logger.js'
+// import logger from "../logger/logger"
 
+import dotenv from "dotenv";
+dotenv.config();
+
+const secret = process.env.JWT_SECRET;
 
 const checkAuth = (req, res, next) => {
-  // logger.debug("Auth middleware");
-  // get the Authorization header
-  const authorization = req.headers.authorization;
-  if (!authorization) {
-    return res.status(401).json({ message: "Unauthorized1" });
-  }
-  // logger.debug("Authorization", authorization);
+  // because of cookie-parser and we named it 'jwt'
+  const token = req.cookies.jwt;
 
-  const bearerToken = authorization.split(" ");
-  if (bearerToken.length !== 2) {
-    return res.status(401).json({ message: "Unauthorized2" });
+  // check
+  if (token != null) {
+    // SECRET is stored in .env
+    jwt.verify(token, secret, (err, decoded) => {
+      if (err) {
+        // res.redirect('/')
+        return res.status(401).json({ message: "Unauthorized1" });
+      } else {
+        // calling next since the check is successful
+        req.body.user = decoded; //passing it on
+        next();
+      }
+    });
+  } else {
+    // res.redirect('/')
+    return res.status(401).json({ message: "Unauthorized" });
   }
-  // logger.debug("Token", bearerToken[1]);
-  jwt.verify(bearerToken[1], process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({ message: "Unauthorized3" });
-    }
-    // logger.debug("Decoded", decoded);
-    req.user = decoded;
-      next();
-  });
 };
 
 export default checkAuth;

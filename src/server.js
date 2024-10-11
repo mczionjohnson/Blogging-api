@@ -4,16 +4,22 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 
-import limiter from "./config/rateLimiter.js"
+import cookieParser from 'cookie-parser'
+
+// import limiter from "./config/rateLimiter.js";
 import db from "./database/connection.js";
 import httpLogger from "./logger/httpLogger.js";
 
 import indexRouter from "./routes/index.js";
-import blogRouter from "./routes/Blog.js";
-import authBlogRouter from "./routes/userBlog.js";
+import clientRouter from "./routes/client.js";
+import authRouter from "./routes/auth.js";
 // import redisClient from "./integrations/redis.js"
 
 const app = express();
+
+// parse cookies
+app.use(cookieParser())
+
 
 // Apply the rate limiting middleware to all requests globally
 // app.use(limiter);
@@ -24,8 +30,6 @@ app.use(helmet());
 // for morgan
 app.use(httpLogger);
 
-
-
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -35,9 +39,9 @@ dotenv.config();
 db();
 // redisClient.connect()
 
-app.use("/", indexRouter);
-app.use("/blogs", blogRouter);
-app.use("/allmyblogs", authBlogRouter);
+app.use("/api/v1", indexRouter);
+app.use("/api/v1/whistles", clientRouter);
+app.use("/api/v1/user", authRouter);
 
 app.all("*", (req, res) => {
   res.status(404);

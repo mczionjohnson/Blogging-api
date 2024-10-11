@@ -3,10 +3,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 const userSchema = mongoose.Schema({
-  firstName: {
-    type: String,
-  },
-  lastName: {
+  username: {
     type: String,
   },
   email: {
@@ -18,6 +15,9 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  whistleCreated: [],
+  whistleLiked: [],
+  whistleSaved: []
 });
 
 // The code in the UserScheme.pre() function is called a pre-hook.
