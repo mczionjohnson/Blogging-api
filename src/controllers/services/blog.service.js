@@ -1,9 +1,5 @@
 import Blog from "../../models/blogSchema.js";
-<<<<<<< HEAD
-
-=======
 // import redisClient from "../../integrations/redis.js";
->>>>>>> wind
 
 import logger from "../../logger/logger.js";
 
@@ -18,39 +14,12 @@ export const getAllBlogs = async (query) => {
 
       const searchData = await Blog.find({
         $or: [{ $and: [searchConditionOne, { state: "published" }] }],
-      })
-        .sort({ readCount: -1, readingTime: 1, timestamps: -1 })
-        .skip(skip)
-        .limit(limit);
+      }).sort({ readCount: -1, readingTime: 1, timestamps: -1 });
+      // .skip(skip)
+      // .limit(limit);
 
-      return { data: searchData, meta: { page, limit } };
+      return { data: searchData };
     } else {
-<<<<<<< HEAD
-  
-
-      let publishedBlogs = await Blog.find({ state: "published" })
-        .sort({ readCount: -1, readingTime: 1, timestamps: -1 })
-        .skip(skip)
-        .limit(limit);
-
-
-  
-      return { data: publishedBlogs, meta: { page, limit } };
-=======
-      // // set cacheKey and check for cache
-      // const cacheKey = "publishedBlog";
-
-      // // get data from database
-      // const value = await redisClient.get(cacheKey);
-
-      // // check for cache miss
-      // if (value != null) {
-      //   console.log("returning data from cache");
-      //   return { data: JSON.parse(value), meta: { page, limit } };
-      // }
-
-      // cache miss is true, get data from DB
-      // console.log("getting data from DB");
       let publishedBlogs = await Blog.find({ state: "published" }).sort({
         readCount: -1,
         readingTime: 1,
@@ -59,10 +28,7 @@ export const getAllBlogs = async (query) => {
       // .skip(skip)
       // .limit(limit);
 
-      // // set cache with expirition of 1 minute
-      // await redisClient.setEx(cacheKey, 1 * 60, JSON.stringify(publishedBlogs));
       return { data: publishedBlogs };
->>>>>>> wind
     }
   } catch (error) {
     logger.error(error);
