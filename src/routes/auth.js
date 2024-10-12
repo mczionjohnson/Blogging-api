@@ -4,14 +4,13 @@ import logger from "../logger/logger.js";
 import Blog from "../models/blogSchema.js";
 import User from "../models/userSchema.js";
 
-import jwt from "jsonwebtoken";
 import checkAuth from "../middleware/auth.middleware.js";
 
 import * as authController from "../controllers/userBlog.controller.js";
 
 const authRouter = Router();
 
-//check token for routes
+// check token for routes
 authRouter.all("*", checkAuth);
 
 authRouter.get("/profile", authController.getUserProfile);
@@ -39,55 +38,36 @@ authRouter.get("/mywhistles/:blogId", async (req, res) => {
   }
 });
 
-authRouter.post("/", async (req, res) => {
-  let token = req.headers.authorization;
-  token = token.split(" ")[1];
+// create a post
+authRouter.post("/mywhistles", async (req, res) => {
+  const user = req.body.user;
+  const id = user._id;
 
-  if (!token) {
-    res.json("No token provided");
-  }
-  if (token) {
-    // SECRET is stored in .env
-    jwt.verify(token, process.env.JWT_SECRET, async (err, authToken) => {
-      const email = authToken.email;
-      // logger.info(authToken)
-      if (err) {
-        res.redirect("/");
-      } else {
-        let user = await User.findOne({ email });
+  try {
+    const count = Object.keys(req.body.post).length;
 
-        // logger.info(user);
+    const readingTime = count;
+    const post = req.body.post;
+    const state = req.body.state;
 
-        const count = Object.keys(req.body.blogBody).length;
-        const readingTime = count;
-
-        const title = req.body.title;
-        const description = req.body.description;
-        const tags = req.body.tags;
-        const author = req.user.email;
-        const blogBody = req.body.blogBody;
-        const state = req.body.state;
-
-        const blog = new Blog({
-          title: title,
-          description: description,
-          tags: tags,
-          author: author,
-          state: state,
-          blogBody: blogBody,
-          readingTime: readingTime,
-          user: user,
-        });
-
-        const savedBlog = await blog.save();
-
-        res.status(200).json({ message: "Blog created", savedBlog });
-        logger.info(`Success: ${user.email} posted a blog`);
-      }
+    const blog = new Blog({
+      state: state,
+      body: post,
+      readingTime: readingTime,
+      user: id,
     });
+
+    const savedBlog = await blog.save();
+
+    res.status(200).json({ message: "Blog created", savedBlog });
+    logger.info(`Success: ${user.email} posted a blog`);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: "unsuccessful" });
   }
 });
 
+// update a post
 authRouter.patch("/mywhistles/:blogId", async (req, res) => {
   const { blogId } = req.params;
   const { body, state } = req.body;
@@ -133,6 +113,7 @@ authRouter.patch("/mywhistles/:blogId", async (req, res) => {
   }
 });
 
+// delete a post
 authRouter.delete("/mywhistles/:blogId", async (req, res) => {
   const { blogId } = req.params;
 

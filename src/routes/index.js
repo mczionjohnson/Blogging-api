@@ -21,7 +21,7 @@ indexRouter.post("/login", generateMiddleWare(loginSchema), authLogin);
 
 indexRouter.get("/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 });
-  res.redirect("/");
+  res.redirect("/api/v1");
 });
 
 export default indexRouter;
